@@ -106,6 +106,7 @@ MongoDB 单节点是 MongoDB 中最为简单的部署方式，对于 MongoDB 性
 2.执行 create_host_standalone.py  
 ```
 python create_host_standalone.py -z <zabbix_server_ip> -u <zabbix_user> -p <zabbix_password> -m <mongodb_ip>
+
 zabbix_server_ip，zabbix_user，zabbix_password，mongodb_ip 请替换为实际值
 注：若不输入 Zabbix Server 的用户名密码，则使用 Zabbix 默认的 Admin/zabbix
 ```
@@ -115,6 +116,7 @@ zabbix_server_ip，zabbix_user，zabbix_password，mongodb_ip 请替换为实际
 vim /etc/crontab 
 在文件末尾添加：
 */2 * * * * root /usr/bin/python36 /yourpath/mongodb_standalone_noauth.py -z <zabbix_server_ip> -m <mongodb_ip> -p <mongodb_port>
+
 zabbix_server_ip，mongodb_ip，mongodb_port 请替换为实际值
 另：python路径和mongodb_standalone_noauth.py路径根据实际修改
 ```
