@@ -96,6 +96,7 @@ MongoDB 单节点是 MongoDB 中最为简单的部署方式，对于 MongoDB 性
 + Python 3.6+
 + Python 模块：requests 2.19.1,  pymongo 3.7.2
 + zabbix-sender 4.0  
+
 *默认 Zabbix Server 已自行配置完毕*
 
 ##### 配置步骤  
