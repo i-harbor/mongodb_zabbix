@@ -4,7 +4,7 @@
 MongoDB 单节点是 MongoDB 中最为简单的部署方式，对于 MongoDB 性能的监控，我们基于 Zabbix 提出一套简单、快速、有效的监控部署方案  
 
 适用范围：
-+ MongoDB 4.0  且无需使用用户名、密码进行安全认证 
++ MongoDB 4.0   
 + Zabbix 4.0 
 
 配置内容： 
@@ -15,7 +15,7 @@ MongoDB 单节点是 MongoDB 中最为简单的部署方式，对于 MongoDB 性
 
 ### 机制 
 **监控端**（Zabbix Server）：需导入模板，创建主机组，在该主机组中为待监控的 MongoDB 单节点创建主机，并为主机链接导入的模板  
-**被监控端**（Zabbix Sender）：通过 MongoDB 的 ip 和 port 来连接 MongoDB，并获取 serverStatus 信息，从信息中选取模板中各监控项所需数据，通过 Zabbix Sender 发送至 Zabbix Server 中对应主机及其监控项  
+**被监控端**（Zabbix Sender）：通过 MongoDB 的 ip 和 port 来连接 MongoDB (若 MongoDB 需认证，则还需 user 和 password)，并获取 serverStatus 信息，从信息中选取模板中各监控项所需数据，通过 Zabbix Sender 发送至 Zabbix Server 中对应主机及其监控项  
 
 **注：Zabbix Sender 可安装在任意节点，不一定要安装在 MongoDB 所在节点，只要能通过 ip 和 port 连接上 MongoDB 即可** 
 
@@ -46,6 +46,17 @@ MongoDB 单节点是 MongoDB 中最为简单的部署方式，对于 MongoDB 性
    [2] 获取 serverStatus 信息  
    [3] 从中取出模板中各监控项对应的数据  
    [4] 通过 Zabbix Sender 全部发送至 Zabbix Server 的对应主机  
+
+##### mongodb_standalone_auth.py  
+
++ 通过执行该 Python 文件可以获取 MongoDB 的 serverStatus信息，并由 Zabbix Sender 发送至 Zabbix Server 的对应主机  
++ 输入： Zabbix Server ip，MongoDB ip，MongoDB port, MongoDB user, MongoDB password
++ 完成内容：  
+   [1] 通过 MongoDB ip 和 port 连接 MongoDB  
+   [2] 通过 MongoDB user 和 password 完成认证    
+   [3] 获取 serverStatus 信息  
+   [4] 从中取出模板中各监控项对应的数据  
+   [5] 通过 Zabbix Sender 全部发送至 Zabbix Server 的对应主机 
 
 ### 模板 
 模板名：Template DB MongoDB  
@@ -109,13 +120,24 @@ zabbix_server_ip，zabbix_user，zabbix_password，mongodb_ip 请替换为实际
 注：若不输入 Zabbix Server 的用户名密码，则使用 Zabbix 默认的 Admin/zabbix
 ```
 
-3.通过 Linux 的 crontab 将 mongodb_standalone_noauth.py 设置为定时执行（建议2分钟执行一次）
+3.根据 MongoDB 是否需要认证分为两种情况：    
+若不需认证，则通过 Linux 的 crontab 将 mongodb_standalone_noauth.py 设置为定时执行（建议每2分钟执行一次）
 ```
 vim /etc/crontab 
 在文件末尾添加：
 */2 * * * * root /usr/bin/python36 /yourpath/mongodb_standalone_noauth.py -z <zabbix_server_ip> -m <mongodb_ip> -p <mongodb_port>
 zabbix_server_ip，mongodb_ip，mongodb_port 请替换为实际值
-另：python路径和mongodb_standalone_noauth.py路径根据实际修改
+另：python 路径和 mongodb_standalone_noauth.py 路径请根据实际修改
+```
+
+若需要认证，则通过 Linux 的 crontab 将 mongodb_standalone_auth.py 设置为定时执行（建议每2分钟执行一次）
+```
+vim /etc/crontab 
+在文件末尾添加：
+*/2 * * * * root /usr/bin/python36 /yourpath/mongodb_standalone_auth.py -z <zabbix_server_ip> -m <mongodb_ip> -p <mongodb_port> -u <mongodb_user> -d <mongodb_password>
+zabbix_server_ip，mongodb_ip，mongodb_port，mongodb_user，mongodb_password 请替换为实际值
+注：需确保输入的 MongoDB 用户有权限执行 serverStatus 命令，建议使用 admin 或 root 用户
+另：python 路径和 mongodb_standalone_auth.py 路径请根据实际修改
 ```
 
 至此，配置完成，即可在 Zabbix Server 中找到名为 Mongodb Standalone 的主机组，在该主机组中找到名为 mongo_server 的主机，查看监控数据  
