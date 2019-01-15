@@ -138,6 +138,7 @@ zabbix_server_ip，mongodb_ip，mongodb_port 请替换为实际值
 vim /etc/crontab 
 在文件末尾添加：
 */2 * * * * root /usr/bin/python36 /yourpath/mongodb_standalone_auth.py -z <zabbix_server_ip> -m <mongodb_ip> -p <mongodb_port> -u <mongodb_user> -d <mongodb_password>
+
 zabbix_server_ip，mongodb_ip，mongodb_port，mongodb_user，mongodb_password 请替换为实际值
 注：需确保输入的 MongoDB 用户有权限执行 serverStatus 命令，建议使用 admin 或 root 用户
 另：python 路径和 mongodb_standalone_auth.py 路径请根据实际修改
