@@ -35,7 +35,7 @@ MongoDB 单节点是 MongoDB 中最为简单的部署方式，对于 MongoDB 性
    [1] 将同一目录下 mongo_standalone.xml 中的模板导入 Zabbix Server   
    [2] 在 Zabbix Server 中创建名为 Mongodb Standalone 的主机组  
    [3] 在 Mongodb Standalone 主机组中创建名为 mongo_server 的主机  
-   [4] 为 mongo_server 链接导入的模板  
+   [4] 为创建的主机 mongo_server 链接导入的模板  
 
 ##### mongodb_standalone_noauth.py  
 

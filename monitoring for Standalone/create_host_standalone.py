@@ -4,8 +4,8 @@
 '''
 '@file create_host_standalone.py
 '@author liyunting
-'@version 1
-'@lastModify: 2019-01-13 19:44
+'@version 2
+'@lastModify: 2019-01-31 18:13
 '
 '''
 
@@ -40,14 +40,14 @@ def zabbix_call(payload, zabbix_server):
 def zabbix_auth(user, pwd, zabbix_server):
 	auth = ''
 	payload = {
-	    "method": "user.login",
-	    "params": {
-	    	"user": user,
-	    	"password": pwd
-	    },
-	    "jsonrpc": "2.0",
-	    "id": 1,
-	    "auth": None
+		"method": "user.login",
+		"params": {
+			"user": user,
+			"password": pwd
+		},
+		"jsonrpc": "2.0",
+		"id": 1,
+		"auth": None
 	}
 	res = zabbix_call(payload, zabbix_server) 
 	if 'result' in res :
@@ -60,6 +60,7 @@ def zabbix_auth(user, pwd, zabbix_server):
 '''
 'function: zabbix_create_group
 'description: connect to zabbix server and create host group
+              if the host group already exists, just return the group id
 'parameter: auth           string   your authentication token
 '           groupname      string   the name of the hostgroup
 '           zabbix_server  string the ip of zabbix server  
@@ -67,22 +68,43 @@ def zabbix_auth(user, pwd, zabbix_server):
 '''
 def zabbix_create_group(auth, groupname, zabbix_server):
 	host_group_id = ''
-	if auth != '':
-		#create host group
+	#try to get the host group id
+	payload = {
+		"jsonrpc": "2.0",
+		"method": "hostgroup.get",
+		"params": {
+			"output": "extend",
+			"filter": {
+				"name": [
+					groupname,
+				]
+			}
+		},
+		"auth": auth,
+		"id": 1
+	}
+	res = zabbix_call(payload, zabbix_server)
+	if 'result' in res:
+		host_group_id = res['result'][0]['groupid']
+		print('the hostgroup:', groupname, 'already exists')
+	else :
+		#The host group does not exist
+		#Then create host group
 		payload = {
-    		"jsonrpc": "2.0",
-    		"method": "hostgroup.create",
-    		"params": {
-    		    "name": groupname
-    		},
-   	 		"auth": auth,
-    		"id": 1
+			"jsonrpc": "2.0",
+			"method": "hostgroup.create",
+			"params": {
+				"name": groupname
+			},
+			"auth": auth,
+			"id": 1
 		}
 		res = zabbix_call(payload, zabbix_server)
 		if 'result' in res :
 			host_group_id = res['result']['groupids'][0]
-			print('Create hostgroup successfully')
+			print('create hostgroup:', groupname, 'successfully')
 		else:
+			print("error in creating hostgroup:", groupname)
 			print(res['error'])
 	return host_group_id
 
@@ -95,58 +117,58 @@ def zabbix_create_group(auth, groupname, zabbix_server):
 '           zabbix_server string the ip of zabbix server  
 '''
 def zabbix_import_template(auth, filepath, zabbix_server):
-	if auth != '':
-		with open(filepath,'r') as f:
-			content = f.read()
-		payload = {
-    		"jsonrpc": "2.0",
-    		"method": "configuration.import",
-    		"params": {
-    		    "format": "xml",
-    		    "rules": {
-    		    	"applications": {
-               			"createMissing": True,
-               			"deleteMissing": False
-           			},
-    		        "templates": {
-    		            "createMissing": True,
-    		            "updateExisting": True
-    		        },
-    		        "screens": {
-    		            "createMissing": True,
-    		            "updateExisting": True
-    		        },    		        
-    		        "valueMaps": {
-                		"createMissing": True,
-                		"updateExisting": False
-           			},
-					"graphs": {
-               			"createMissing": True,
-               			"updateExisting": True,
-               			"deleteMissing": True
-           			},    			        
-    		        "triggers": {
-               			"createMissing": True,
-               			"updateExisting": True,
-               			"deleteMissing": True
-           			},
-    		        "items": {
-               			"createMissing": True,
-               			"updateExisting": True,
-               			"deleteMissing": True
-           			}
-    		    },
-    		    "source": content
-    		},
-    		"auth": auth,
-    		"id": 1
-		}
-		res = zabbix_call(payload, zabbix_server)
-		if 'result' in res :
-			if res['result']:
-				print('template import successfully')
-		else:
-			print(res['error'])
+	with open(filepath,'r') as f:
+		content = f.read()
+	payload = {
+		"jsonrpc": "2.0",
+		"method": "configuration.import",
+		"params": {
+			"format": "xml",
+			"rules": {
+				"applications": {
+						"createMissing": True,
+						"deleteMissing": False
+				},
+				"templates": {
+					"createMissing": True,
+					"updateExisting": True
+				},
+				"screens": {
+					"createMissing": True,
+					"updateExisting": True
+				},
+				"valueMaps": {
+					"createMissing": True,
+					"updateExisting": False
+				},
+				"graphs": {
+					"createMissing": True,
+					"updateExisting": True,
+					"deleteMissing": True
+				},
+				"triggers": {
+					"createMissing": True,
+					"updateExisting": True,
+					"deleteMissing": True
+				},
+				"items": {
+					"createMissing": True,
+					"updateExisting": True,
+					"deleteMissing": True
+				}
+			},
+			"source": content
+		},
+		"auth": auth,
+		"id": 1
+	}
+	res = zabbix_call(payload, zabbix_server)
+	if 'result' in res :
+		if res['result']:
+			print('template import successfully')
+	else :
+		print('error in importing the template')
+		print(res['error'])
 
 
 '''
@@ -159,26 +181,25 @@ def zabbix_import_template(auth, filepath, zabbix_server):
 '''
 def zabbix_get_template(auth, templatename, zabbix_server):
 	template_id = ''
-	if auth != '':
-		payload = {
-    		"jsonrpc": "2.0",
-    		"method": "template.get",
-    		"params": {
-    		    "output": "extend",
-    		    "filter": {
-    		        "host": [
-    		            templatename
-    		        ]
-    		    }
-    		},
-    		"auth": auth,
-    		"id": 1
-		}
-		res = zabbix_call(payload, zabbix_server)
-		if 'result' in res :
-			template_id = res['result'][0]['templateid']
-		else:
-			print(res['error'])
+	payload = {
+			"jsonrpc": "2.0",
+			"method": "template.get",
+			"params": {
+			    "output": "extend",
+			    "filter": {
+			        "host": [
+			            templatename
+			        ]
+			    }
+			},
+			"auth": auth,
+			"id": 1
+	}
+	res = zabbix_call(payload, zabbix_server)
+	if 'result' in res :
+		template_id = res['result'][0]['templateid']
+	else:
+		print(res['error'])
 	return template_id
 
 
@@ -194,42 +215,42 @@ def zabbix_get_template(auth, templatename, zabbix_server):
 '''
 def zabbix_create_host(auth, hostname, hostip, host_group_id, template_id, zabbix_server):
 	host_id = ''
-	if auth != '' and host_group_id != '':
-		payload = {
-		    "jsonrpc": "2.0",
-		    "method": "host.create",
-		    "params": {
-		        "host": hostname,
-		        "interfaces": [
-		            {
-		                "type": 1,
-		                "main": 1,
-		                "useip": 1,
-		                "ip": hostip,
-		                "dns": "",
-		                "port": "10050"
-		            }
-		        ],
-		        "groups": [
-		            {
-		                "groupid": host_group_id
-		            }
-		        ],
-		        "templates": [
-		            {
-		                "templateid": template_id
-		            }
-		        ]		        
-		    },
-		    "auth": auth,
-		    "id": 1
-		}
-		res = zabbix_call(payload, zabbix_server)
-		if 'result' in res :
-			host_id = res['result']['hostids'][0]
-			print("create", hostname , "successfully")
-		else:
-			print(res['error'])
+	payload = {
+	    "jsonrpc": "2.0",
+	    "method": "host.create",
+	    "params": {
+	        "host": hostname,
+	        "interfaces": [
+	            {
+	                "type": 1,
+	                "main": 1,
+	                "useip": 1,
+	                "ip": hostip,
+	                "dns": "",
+	                "port": "10050"
+	            }
+	        ],
+	        "groups": [
+	            {
+	                "groupid": host_group_id
+	            }
+	        ],
+	        "templates": [
+	            {
+	                "templateid": template_id
+	            }
+	        ]		        
+	    },
+	    "auth": auth,
+	    "id": 1
+	}
+	res = zabbix_call(payload, zabbix_server)
+	if 'result' in res :
+		host_id = res['result']['hostids'][0]
+		print("create host:", hostname , "successfully")
+	else:
+		print('error in creating host:', hostname)
+		print(res['error'])
 
 
 '''
@@ -283,11 +304,14 @@ def main(argv):
 	zabbix_import_template(auth, './mongo_standalone.xml', zabbix_server)
 	template_id = zabbix_get_template(auth, 'Template DB MongoDB', zabbix_server)
 	#create host group 'Mongodb Standalone'
-	group_id = zabbix_create_group(auth, 'Mongodb Standalone', zabbix_server)
+	hostgroup = 'Mongodb Standalone'
+	group_id = zabbix_create_group(auth, hostgroup, zabbix_server)
 	if template_id != '' and group_id != '':
 		#create host 'mongo_server' and link 'Template DB MongoDB'
 		hostname = 'mongo_server'
 		zabbix_create_host(auth, hostname, mongo_ip, group_id, template_id, zabbix_server)
+	else :
+		print("can not complete creating the host, please check and try again")
 
 
 if __name__ == '__main__':
