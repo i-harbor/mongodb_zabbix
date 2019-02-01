@@ -2,10 +2,10 @@
 #-*- coding: utf-8 -*-
 
 '''
-'@file create_host_standalone.py
-'@author liyunting
-'@version 2
-'@lastModify: 2019-01-31 18:13
+'@file: create_host_standalone.py
+'@author: liyunting
+'@version: 2
+'@lastModify: 2019-02-01 17:07
 '
 '''
 
@@ -15,29 +15,33 @@ import getopt
 import requests
 
 
-'''
-'function: zabbix_call
-'description: call zabbix web api by json-rpc
-'parameter: payload        dict   the parameter to be passed  
-'           zabbix_server  string the ip of zabbix server  
-'return: the request response object  
-'''
 def zabbix_call(payload, zabbix_server):
+	''' Call zabbix web api by json-rpc.
+
+	Args:
+		payload        dict    the parameter to be passed  
+		zabbix_server  string  the ip of zabbix server 
+
+	Returns:
+		the request response object  
+	'''
 	url = "http://" + zabbix_server + "/zabbix/api_jsonrpc.php"
 	headers = {'content-type': 'application/json'}
 	response = requests.post(url, data=json.dumps(payload), headers=headers).json()
 	return response
 
 
-'''
-'function: zabbix_auth
-'description: connect to zabbix server and authenticate
-'parameter: user           string   the zabbix server username
-'           pwd            string   the zabbix server password 
-'           zabbix_server  string the ip of zabbix server  
-'return: the authentication token
-'''
 def zabbix_auth(user, pwd, zabbix_server):
+	'''Connect to zabbix server and authenticate by the given username and password.
+
+	Args:
+		user           string   the zabbix server username
+		pwd            string   the zabbix server password
+		zabbix_server  string   the ip of zabbix server
+
+	Returns:
+		the authentication token
+	'''
 	auth = ''
 	payload = {
 		"method": "user.login",
@@ -57,16 +61,21 @@ def zabbix_auth(user, pwd, zabbix_server):
 	return auth
 
 
-'''
-'function: zabbix_create_group
-'description: connect to zabbix server and create host group
-              if the host group already exists, just return the group id
-'parameter: auth           string   your authentication token
-'           groupname      string   the name of the hostgroup
-'           zabbix_server  string the ip of zabbix server  
-'return:the host group id 
-'''
 def zabbix_create_group(auth, groupname, zabbix_server):
+	'''Connect to zabbix server and create host group.
+
+	Firstly, check whether the host group exists. If it exists, then return 
+	the id of the host group. If it does not exist, then create it and return
+	the id of the host group.
+
+	Args:
+		auth           string   your authentication token
+		groupname      string   the name of the hostgroup
+		zabbix_server  string   the ip of zabbix server
+
+	Returns:
+		the host group id
+	'''
 	host_group_id = ''
 	#try to get the host group id
 	payload = {
@@ -109,14 +118,14 @@ def zabbix_create_group(auth, groupname, zabbix_server):
 	return host_group_id
 
 
-'''
-'function: zabbix_import_template
-'description: connect to zabbix server and import template
-'parameter: auth          string   your authentication token
-'           filepath      string   the whole path of the xml file(e.g. './example.xml')
-'           zabbix_server string the ip of zabbix server  
-'''
 def zabbix_import_template(auth, filepath, zabbix_server):
+	'''Connect to zabbix server and import the MongoDB template.
+
+	Args:
+		auth          string   your authentication token
+		filepath      string   the whole path of the xml file(e.g. '/root/liyunting/example.xml')
+		zabbix_server string   the ip of zabbix server
+	'''
 	with open(filepath,'r') as f:
 		content = f.read()
 	payload = {
@@ -171,15 +180,17 @@ def zabbix_import_template(auth, filepath, zabbix_server):
 		print(res['error'])
 
 
-'''
-'function: zabbix_get_template
-'description: connect to zabbix server and get template
-'parameter: auth          string   your authentication token
-'           templatename  string   the name of the template
-'           zabbix_server string the ip of zabbix server  
-'return:the template id 
-'''
 def zabbix_get_template(auth, templatename, zabbix_server):
+	'''Connect to zabbix server and get the id of the template.
+
+	Args:
+		auth          string   your authentication token
+		templatename  string   the name of the template
+		zabbix_server string   the ip of zabbix server
+
+	Returns:
+		the template id
+	'''
 	template_id = ''
 	payload = {
 			"jsonrpc": "2.0",
@@ -203,17 +214,17 @@ def zabbix_get_template(auth, templatename, zabbix_server):
 	return template_id
 
 
-'''
-'function: zabbix_create_host
-'description: create host and link template 
-'parameter: auth          string    your authentication token
-'           hostname      string    the name of the host
-'           hostip        string    the ip of the host
-'			host_group_id string    the id of group 
-'			template_id   string    the id of template 
-'           zabbix_server string the ip of zabbix server  
-'''
 def zabbix_create_host(auth, hostname, hostip, host_group_id, template_id, zabbix_server):
+	'''Create host and link template.
+
+	Args:
+		auth          string    your authentication token
+		hostname      string    the name of the host to be created
+		hostip        string    the ip of the host to be created
+		host_group_id string    the id of host group
+		template_id   string    the id of template
+		zabbix_server string    the ip of zabbix server
+	'''
 	host_id = ''
 	payload = {
 	    "jsonrpc": "2.0",
@@ -253,16 +264,18 @@ def zabbix_create_host(auth, hostname, hostip, host_group_id, template_id, zabbi
 		print(res['error'])
 
 
-'''
-'function: parseArg
-'description: parse python command line arguments and return arguments
-'parameter: argv   string  command line arguments 
-'return: zabbix_server  string  the ip of zabbix server
-'        zabbix_user    string  the user of zabbix, default: Admin
-'        zabbix_pwd     string  password for user, default: zabbix
-'        mongo_ip       string  the ip of mongo server
-'''
 def parseArg(argv):
+	'''Parse python command line arguments and return arguments.
+
+	Args:
+		argv   string  command line arguments
+
+	Returns:
+		zabbix_server  string  the ip of zabbix server
+		zabbix_user    string  the user of zabbix, default: Admin
+		zabbix_pwd     string  password for user, default: zabbix
+		mongo_ip       string  the ip of mongo server
+	'''
 	zabbix_user = 'Admin'
 	zabbix_pwd = 'zabbix'
 	zabbix_server = ''
@@ -300,12 +313,16 @@ def main(argv):
 		print('\nzabbix server authentication failed\n')
 		sys.exit()
 
-	#import template
+	#import template and get its id
 	zabbix_import_template(auth, './mongo_standalone.xml', zabbix_server)
 	template_id = zabbix_get_template(auth, 'Template DB MongoDB', zabbix_server)
+
 	#create host group 'Mongodb Standalone'
 	hostgroup = 'Mongodb Standalone'
 	group_id = zabbix_create_group(auth, hostgroup, zabbix_server)
+
+	#if import template and create host group successfully
+	#then create host 'mongo_server'
 	if template_id != '' and group_id != '':
 		#create host 'mongo_server' and link 'Template DB MongoDB'
 		hostname = 'mongo_server'

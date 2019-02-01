@@ -2,10 +2,10 @@
 #-*- coding: utf-8 -*-
 
 '''
-'@file mongodb_standalone_noauth.py
-'@author liyunting
-'@version 1
-'@lastModify: 2019-01-13 19:45
+'@file: mongodb_standalone_noauth.py
+'@author: liyunting
+'@version: 2
+'@lastModify: 2019-02-01 17:35
 '
 '''
 
@@ -16,16 +16,24 @@ from pymongo.errors import ConnectionFailure
 from pymongo.errors import OperationFailure
 
 
+#the name of your zabbix host
 zabbix_host = 'mongo_server'
 
-'''
-'function: getServerStatus
-'description: get the serverStatus of the mongod or mongos instance 
-'parameter: ip    string   the server ip that the mongod instance is located 
-'           port  int      the port that is used by the mongod instance 
-'return: status code and result dict       
-'''
+
 def getServerStatus(ip, port):
+	'''Get the serverStatus of the mongod instance.
+
+	Try to get the information of mongodb server by command.
+	You can refer to MongoDB manual for more details about serverStatus command 
+
+	Args:
+		ip    string   the server ip that the mongod instance is located
+		port  int      the port that is used by the mongod instance
+
+	Returns:
+		status code    int    0/1/2
+		server_status  dict   the status result
+	'''
 	server_status = {}
 	try:
 		client = MongoClient(ip, port)
@@ -39,15 +47,17 @@ def getServerStatus(ip, port):
 		return 2, server_status
 
 
-'''
-'function: parseArg
-'description: parse python command line arguments and return arguments
-'parameter: argv   string  command line arguments 
-'return: zabbix_server  string  the ip of zabbix server
-'        mongo_ip       string  the ip of mongodb server
-'        mongo_port     int     the port of mongodb
-'''
 def parseArg(argv):
+	'''Parse python command line arguments and return arguments.
+
+	Args:
+		argv   string  command line arguments
+
+	Returns:
+		zabbix_server  string  the ip of zabbix server
+		mongo_ip       string  the ip of mongodb server
+		mongo_port     int     the port of mongodb
+	'''
 	zabbix_server = ''
 	mongo_ip = ''
 	mongo_port = ''
@@ -69,15 +79,14 @@ def parseArg(argv):
 	return zabbix_server, mongo_ip, mongo_port
 
 
-'''
-'function: send_value
-'description: send certain value to the zabbix host by zabbix_sender process 
-'parameter: item_key      string   the key of a certain zabbix item 
-'           zabbix_server string   the ip of zabbix server
-'           item_value    string   the value to be send to zabbix server          
-''
-'''
 def send_value(item_key, zabbix_server, item_value):
+	'''Send certain value to the zabbix host by zabbix_sender process.
+
+	Args:
+		item_key      string   the key of a certain zabbix item
+		zabbix_server string   the ip of zabbix server
+		item_value    string   the value to be send to zabbix server
+	'''
 	send = subprocess.getstatusoutput('zabbix_sender -z ' + zabbix_server + ' -s ' + zabbix_host + ' -k ' + item_key + ' -o ' + item_value)
 	print(send[1])
 	if send[0] == 0:
@@ -86,14 +95,16 @@ def send_value(item_key, zabbix_server, item_value):
 		print('\n', item_key, zabbix_host, 'failed to send\n')
 
 
-'''
-'function: process_mongodb
-'description: get the status data from mongodb and send them to zabbix
-'parameter: ip            string   the ip of mongo server
-'           port          int      the port of mongo server 
-'           zabbix_server string   the ip of zabbix server    
-'''
 def process_mongodb(ip, port, zabbix_server):
+	'''Get the status data from mongodb and send them to zabbix server.
+
+	And you can refer to MongoDB manual for more details about the returns of serverStatus command.
+
+	Args:
+		ip            string   the ip of mongo server
+		port          int      the port of mongo server
+		zabbix_server string   the ip of zabbix server
+	'''
 	status_result =  getServerStatus(ip, port)
 	if status_result[0]  == 0:
 		send_value('mongo.alive', zabbix_server, str(1))

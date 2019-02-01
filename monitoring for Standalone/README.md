@@ -121,6 +121,8 @@ python create_host_standalone.py -z <zabbix_server_ip> -u <zabbix_user> -p <zabb
 zabbix_server_ip，zabbix_user，zabbix_password，mongodb_ip 请替换为实际值
 注：若不输入 Zabbix Server 的用户名密码，则使用 Zabbix 默认的 Admin/zabbix
 ```
+也可选择不执行 create_host_standalone.py ，自行在 zabbix server web 界面上完成模板导入、创建主机组、创建主机、链接模板等  
+
 
 3.根据 MongoDB 是否需要认证分为两种情况：    
 若不需认证，则通过 Linux 的 crontab 将 mongodb_standalone_noauth.py 设置为定时执行（建议每2分钟执行一次）
