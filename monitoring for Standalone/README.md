@@ -39,24 +39,24 @@ MongoDB 单节点是 MongoDB 中最为简单的部署方式，对于 MongoDB 性
 
 ##### mongodb_standalone_noauth.py  
 
-+ 通过执行该 Python 文件可以获取 MongoDB 的 serverStatus信息，并由 Zabbix Sender 发送至 Zabbix Server 的对应主机  
++ 通过执行该 Python 文件可以获取 MongoDB 的 serverStatus信息，并由 Zabbix Sender 发送至 Zabbix Server 中名为 mongo_server 的主机  
 + 输入： Zabbix Server ip，MongoDB ip，MongoDB port
 + 完成内容：  
    [1] 通过 MongoDB ip 和 port 连接 MongoDB   
    [2] 获取 serverStatus 信息  
    [3] 从中取出模板中各监控项对应的数据  
-   [4] 通过 Zabbix Sender 全部发送至 Zabbix Server 的对应主机  
+   [4] 通过 Zabbix Sender 全部发送至 Zabbix Server 中名为 mongo_server 的主机  
 
 ##### mongodb_standalone_auth.py  
 
-+ 通过执行该 Python 文件可以获取 MongoDB 的 serverStatus信息，并由 Zabbix Sender 发送至 Zabbix Server 的对应主机  
++ 通过执行该 Python 文件可以获取 MongoDB 的 serverStatus信息，并由 Zabbix Sender 发送至 Zabbix Server 中名为 mongo_server 的主机  
 + 输入： Zabbix Server ip，MongoDB ip，MongoDB port, MongoDB user, MongoDB password
 + 完成内容：  
    [1] 通过 MongoDB ip 和 port 连接 MongoDB  
    [2] 通过 MongoDB user 和 password 完成认证    
    [3] 获取 serverStatus 信息  
    [4] 从中取出模板中各监控项对应的数据  
-   [5] 通过 Zabbix Sender 全部发送至 Zabbix Server 的对应主机 
+   [5] 通过 Zabbix Sender 全部发送至 Zabbix Server 中名为 mongo_server 的主机 
 
 ### 模板 
 模板名：Template DB MongoDB  
@@ -145,6 +145,9 @@ zabbix_server_ip，mongodb_ip，mongodb_port，mongodb_user，mongodb_password �
 注：需确保输入的 MongoDB 用户有权限执行 serverStatus 命令，建议使用 admin 或 root 用户
 另：python 路径和 mongodb_standalone_auth.py 路径请根据实际修改
 ```
+
+**mongodb_standalone_noauth.py 或 mongodb_standalone_auth.py 中的 zabbix_host 的值需与创建的待监控的主机名保持一致** 
+
 
 至此，配置完成，即可在 Zabbix Server 中找到名为 Mongodb Standalone 的主机组，在该主机组中找到名为 mongo_server 的主机，查看监控数据  
 
