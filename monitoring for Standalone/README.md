@@ -146,7 +146,7 @@ zabbix_server_ip，mongodb_ip，mongodb_port，mongodb_user，mongodb_password �
 另：python 路径和 mongodb_standalone_auth.py 路径请根据实际修改
 ```
 
-**mongodb_standalone_noauth.py 或 mongodb_standalone_auth.py 中的 zabbix_host 的值需与创建的待监控的主机名保持一致** 
+**mongodb_standalone_noauth.py 或 mongodb_standalone_auth.py 中的 zabbix_host 的值需与创建的待监控的主机名保持一致 ，默认为 mongo_server**
 
 
 至此，配置完成，即可在 Zabbix Server 中找到名为 Mongodb Standalone 的主机组，在该主机组中找到名为 mongo_server 的主机，查看监控数据  
