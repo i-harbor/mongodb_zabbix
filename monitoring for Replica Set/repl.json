@@ -1,0 +1,10 @@
+{
+	"name" : "myrepl",
+	"members" : [
+		{"ip" : "10.0.87.31", "port" : 27017, "role" : "not arbiter"},
+		{"ip" : "10.0.87.32", "port" : 27017, "role" : "not arbiter"},
+		{"ip" : "10.0.87.33", "port" : 27017, "role" : "not arbiter"},
+		{"ip" : "10.0.87.34", "port" : 27017, "role" : "not arbiter"},
+		{"ip" : "10.0.87.35", "port" : 27017, "role" : "arbiter"}
+	]
+}	
