@@ -5,7 +5,7 @@
 '@file: create_host_standalone.py
 '@author: liyunting
 '@version: 2
-'@lastModify: 2019-02-01 17:07
+'@lastModify: 2019-02-10 14:28
 '
 '''
 
@@ -93,7 +93,7 @@ def zabbix_create_group(auth, groupname, zabbix_server):
 		"id": 1
 	}
 	res = zabbix_call(payload, zabbix_server)
-	if 'result' in res:
+	if 'result' in res and len(res['result']) > 0:
 		host_group_id = res['result'][0]['groupid']
 		print('the hostgroup:', groupname, 'already exists')
 	else :
@@ -193,18 +193,18 @@ def zabbix_get_template(auth, templatename, zabbix_server):
 	'''
 	template_id = ''
 	payload = {
-			"jsonrpc": "2.0",
-			"method": "template.get",
-			"params": {
-			    "output": "extend",
-			    "filter": {
-			        "host": [
-			            templatename
-			        ]
-			    }
-			},
-			"auth": auth,
-			"id": 1
+		"jsonrpc": "2.0",
+		"method": "template.get",
+		"params": {
+		    "output": "extend",
+		    "filter": {
+		        "host": [
+		            templatename
+		        ]
+		    }
+		},
+		"auth": auth,
+		"id": 1
 	}
 	res = zabbix_call(payload, zabbix_server)
 	if 'result' in res :
