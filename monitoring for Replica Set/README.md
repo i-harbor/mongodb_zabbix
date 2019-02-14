@@ -157,7 +157,32 @@ MongoDB 副本集是 MongoDB 中主要的一种部署方式，采用一组 mongo
 ##### 配置步骤  
 1.将 create_host_repl.py 、repl.json、mongodb_repl_notarbiter.xml、mongodb_repl_arbiter.xml 置于同一目录下  
 
-2.执行 create_host_repl.py  
+2.根据副本集的实际部署情况修改 repl.json  
+如下例中，副本集名为 myrepl，副本集中共有5个成员，其中4个数据节点(含主节点和备节点)以及1个仲裁点  
+```
+示例：  
+{
+   "name" : "myrepl",
+   "members" : [
+      {"ip" : "10.0.87.31", "port" : 27017, "role" : "not arbiter"},
+      {"ip" : "10.0.87.32", "port" : 27017, "role" : "not arbiter"},
+      {"ip" : "10.0.87.33", "port" : 27017, "role" : "not arbiter"},
+      {"ip" : "10.0.87.34", "port" : 27017, "role" : "not arbiter"},
+      {"ip" : "10.0.87.35", "port" : 27017, "role" : "arbiter"}
+   ]
+}
+```
+**格式说明**  
+
+|key|value type|
+|:-----:|:---:|
+|name|string|
+|members|array|
+|ip|string|
+|port|int|
+|role|"arbiter"/"not arbiter"|
+
+3.执行 create_host_repl.py  
 ```
 python create_host_repl.py -z <zabbix_server_ip> -u <zabbix_user> -p <zabbix_password>
 
@@ -166,10 +191,10 @@ zabbix_server_ip, zabbix_user, zabbix_password 请替换为实际值
 ```
 也可选择不执行 create_host_repl.py ，自行在 zabbix server web 界面上完成模板导入、创建主机组、创建主机、链接模板等  
 
-3.将 mongodb_repl_noauth.py 和 mongodb_repl_auth.py 中 main 方法中 repl.json 文件路径替换为实际的绝对路径  
+4.将 mongodb_repl_noauth.py 和 mongodb_repl_auth.py 中 main 方法中 repl.json 文件路径替换为实际的绝对路径  
 不要使用相对路径，否则使用 crontab 定时运行时将会产生错误  
 
-4.根据该副本集是否需要安全认证分为两种情况：  
+5.根据该副本集是否需要安全认证分为两种情况：  
 若不需认证，则通过 Linux 的 crontab 将 mongodb_repl_noauth.py 设置为定时执行（建议每2分钟执行一次）  
 ```
 vim /etc/crontab 
