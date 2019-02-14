@@ -11,7 +11,7 @@ MongoDB 单节点是 MongoDB 中最为简单的部署方式，对于 MongoDB 性
 + 监控端： Zabbix Server 
 + 被监控端：Zabbix Sender（使用 Zabbix Sender 主动向 Zabbix Server 定时发送批量数据，而不使用 Zabbix Agent）  
 
-**注：Zabbix Server 请自行配置，具体配置过程此处不再赘述，下文均默认 Zabbix Server 已完成配置**  
+**注：Zabbix Server 和 Zabbix Sender 请自行配置，具体配置过程此处不再赘述，下文均默认 Zabbix Server 和 Zabbix Sender 已完成配置**  
 
 ### 机制 
 **监控端**（Zabbix Server）：需导入模板，创建主机组，在该主机组中为待监控的 MongoDB 单节点创建主机，并为主机链接导入的模板  
@@ -29,37 +29,38 @@ MongoDB 单节点是 MongoDB 中最为简单的部署方式，对于 MongoDB 性
 ##### create_host_standalone.py 
 
 + 通过执行该 Python 文件可自动在 Zabbix Server 上完成模板导入、主机创建等系列过程  
-+ 调用 Zabbix API，对于 API 的详细说明可参考 Zabbix 4.0 的官方文档 https://www.zabbix.com/documentation/current/manual/api  
++ 调用 Zabbix API，对于 API 的详细说明可参考 Zabbix 4.0 的官方文档 https://www.zabbix.com/documentation/4.0/manual/api  
 + 输入：Zabbix Server ip，Zabbix username，Zabbix password，MongoDB ip   
 + 完成内容：  
    [1] 将同一目录下 mongo_standalone.xml 中的模板导入 Zabbix Server   
    [2] 在 Zabbix Server 中创建名为 Mongodb Standalone 的主机组  
-   [3] 在 Mongodb Standalone 主机组中创建名为 mongo_server 的主机  
-   [4] 为创建的主机 mongo_server 链接导入的模板  
+   [3] 在 Mongodb Standalone 主机组中创建主机，主机名为前缀"mongo_"加上 MongoDB ip，如 "mongo_10.0.87.19"  
+   [4] 为创建的主机链接导入的模板  
 
 ##### mongodb_standalone_noauth.py  
 
-+ 通过执行该 Python 文件可以获取 MongoDB 的 serverStatus信息，并由 Zabbix Sender 发送至 Zabbix Server 中名为 mongo_server 的主机  
++ 通过执行该 Python 文件可以获取 MongoDB 的 serverStatus信息，并由 Zabbix Sender 发送至 Zabbix Server 中对应主机  
 + 输入： Zabbix Server ip，MongoDB ip，MongoDB port
 + 完成内容：  
    [1] 通过 MongoDB ip 和 port 连接 MongoDB   
    [2] 获取 serverStatus 信息  
    [3] 从中取出模板中各监控项对应的数据  
-   [4] 通过 Zabbix Sender 全部发送至 Zabbix Server 中名为 mongo_server 的主机  
+   [4] 通过 Zabbix Sender 全部发送至 Zabbix Server 中对应主机  
 
 ##### mongodb_standalone_auth.py  
 
-+ 通过执行该 Python 文件可以获取 MongoDB 的 serverStatus信息，并由 Zabbix Sender 发送至 Zabbix Server 中名为 mongo_server 的主机  
++ 通过执行该 Python 文件可以获取 MongoDB 的 serverStatus信息，并由 Zabbix Sender 发送至 Zabbix Server 中对应主机  
 + 输入： Zabbix Server ip，MongoDB ip，MongoDB port, MongoDB user, MongoDB password
 + 完成内容：  
    [1] 通过 MongoDB ip 和 port 连接 MongoDB  
    [2] 通过 MongoDB user 和 password 完成认证    
    [3] 获取 serverStatus 信息  
    [4] 从中取出模板中各监控项对应的数据  
-   [5] 通过 Zabbix Sender 全部发送至 Zabbix Server 中名为 mongo_server 的主机 
+   [5] 通过 Zabbix Sender 全部发送至 Zabbix Server 中对应主机 
 
 ### 模板 
 模板名：Template DB MongoDB  
+模板所属主机组：Templates/Databases  
 内容：Applications 6，Items 14，Triggers 1，Graphs 2  
 模板设计参考了 Zabbix 官方提供的 MySQL 数据库模板（Template DB MySQL）  
 
@@ -92,7 +93,7 @@ MongoDB 单节点是 MongoDB 中最为简单的部署方式，对于 MongoDB 性
 |**Mongo version**|mongo.version|Zabbix trapper| Basic_info| 
 
 ##### Triggers（触发器）
-名称： Mongo is down 
+名称： Mongo is down  
 表达式：{Template DB MongoDB:mongo.alive.last()}=0   
 
 ##### Graphs（自定义图形）
@@ -106,9 +107,10 @@ MongoDB 单节点是 MongoDB 中最为简单的部署方式，对于 MongoDB 性
 + Linux CentOS7
 + Python 3.6+
 + Python 模块：requests 2.19.1,  pymongo 3.7.2
++ zabbix-server 4.0
 + zabbix-sender 4.0  
 
-*默认 Zabbix Server 已自行配置完毕*
+*默认 Zabbix Server 和 Zabbix Sender 已自行配置完毕*
 
 ##### 配置步骤  
 
@@ -146,10 +148,7 @@ zabbix_server_ip，mongodb_ip，mongodb_port，mongodb_user，mongodb_password �
 另：python 路径和 mongodb_standalone_auth.py 路径请根据实际修改
 ```
 
-**mongodb_standalone_noauth.py 或 mongodb_standalone_auth.py 中的 zabbix_host 的值需与创建的待监控的主机名保持一致 ，默认为 mongo_server**
-
-
-至此，配置完成，即可在 Zabbix Server 中找到名为 Mongodb Standalone 的主机组，在该主机组中找到名为 mongo_server 的主机，查看监控数据  
+至此，配置完成，即可在 Zabbix Server 中找到名为 Mongodb Standalone 的主机组，在该主机组中找到相应主机，查看监控数据  
 
 
 

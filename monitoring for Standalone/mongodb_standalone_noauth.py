@@ -5,7 +5,7 @@
 '@file: mongodb_standalone_noauth.py
 '@author: liyunting
 '@version: 2
-'@lastModify: 2019-02-01 17:35
+'@lastModify: 2019-02-14 14:48
 '
 '''
 
@@ -15,10 +15,8 @@ from pymongo import *
 from pymongo.errors import ConnectionFailure
 from pymongo.errors import OperationFailure
 
-
-#the name of your zabbix host
-zabbix_host = 'mongo_server'
-
+# the prefix of host that is created
+hostname_first = 'mongo_'
 
 def getServerStatus(ip, port):
 	'''Get the serverStatus of the mongod instance.
@@ -79,13 +77,14 @@ def parseArg(argv):
 	return zabbix_server, mongo_ip, mongo_port
 
 
-def send_value(item_key, zabbix_server, item_value):
+def send_value(item_key, zabbix_server, item_value, zabbix_host):
 	'''Send certain value to the zabbix host by zabbix_sender process.
 
 	Args:
 		item_key      string   the key of a certain zabbix item
 		zabbix_server string   the ip of zabbix server
 		item_value    string   the value to be send to zabbix server
+		zabbix_host   string   the hostname of the server in zabbix
 	'''
 	send = subprocess.getstatusoutput('zabbix_sender -z ' + zabbix_server + ' -s ' + zabbix_host + ' -k ' + item_key + ' -o ' + item_value)
 	print(send[1])
@@ -95,7 +94,7 @@ def send_value(item_key, zabbix_server, item_value):
 		print('\n', item_key, zabbix_host, 'failed to send\n')
 
 
-def process_mongodb(ip, port, zabbix_server):
+def process_mongodb(ip, port, zabbix_server, hostname):
 	'''Get the status data from mongodb and send them to zabbix server.
 
 	And you can refer to MongoDB manual for more details about the returns of serverStatus command.
@@ -104,25 +103,26 @@ def process_mongodb(ip, port, zabbix_server):
 		ip            string   the ip of mongo server
 		port          int      the port of mongo server
 		zabbix_server string   the ip of zabbix server
+		hostname      string   the hostname of mongo server in zabbix
 	'''
 	status_result =  getServerStatus(ip, port)
 	if status_result[0]  == 0:
-		send_value('mongo.alive', zabbix_server, str(1))
-		send_value('mongo.conn.current', zabbix_server, str(status_result[1]['connections']['current']))
-		send_value('mongo.conn.available', zabbix_server, str(status_result[1]['connections']['available']))
-		send_value('mongo.mem.resident', zabbix_server, str(status_result[1]['mem']['resident']))
-		send_value('mongo.network.in', zabbix_server, str(status_result[1]['network']['bytesIn']))
-		send_value('mongo.network.out', zabbix_server, str(status_result[1]['network']['bytesOut']))
-		send_value('mongo.op.delete', zabbix_server, str(status_result[1]['opcounters']['delete']))
-		send_value('mongo.op.getmore', zabbix_server, str(status_result[1]['opcounters']['getmore']))
-		send_value('mongo.op.insert', zabbix_server, str(status_result[1]['opcounters']['insert']))
-		send_value('mongo.op.query', zabbix_server, str(status_result[1]['opcounters']['query']))
-		send_value('mongo.op.update', zabbix_server, str(status_result[1]['opcounters']['update']))
-		send_value('mongo.page_faults', zabbix_server, str(status_result[1]['extra_info']['page_faults']))
-		send_value('mongo.uptime', zabbix_server, str(status_result[1]['uptime']))
-		send_value('mongo.version', zabbix_server, str(status_result[1]['version']))
+		send_value('mongo.alive', zabbix_server, str(1), hostname)
+		send_value('mongo.conn.current', zabbix_server, str(status_result[1]['connections']['current']), hostname)
+		send_value('mongo.conn.available', zabbix_server, str(status_result[1]['connections']['available']), hostname)
+		send_value('mongo.mem.resident', zabbix_server, str(status_result[1]['mem']['resident']), hostname)
+		send_value('mongo.network.in', zabbix_server, str(status_result[1]['network']['bytesIn']), hostname)
+		send_value('mongo.network.out', zabbix_server, str(status_result[1]['network']['bytesOut']), hostname)
+		send_value('mongo.op.delete', zabbix_server, str(status_result[1]['opcounters']['delete']), hostname)
+		send_value('mongo.op.getmore', zabbix_server, str(status_result[1]['opcounters']['getmore']), hostname)
+		send_value('mongo.op.insert', zabbix_server, str(status_result[1]['opcounters']['insert']), hostname)
+		send_value('mongo.op.query', zabbix_server, str(status_result[1]['opcounters']['query']), hostname)
+		send_value('mongo.op.update', zabbix_server, str(status_result[1]['opcounters']['update']), hostname)
+		send_value('mongo.page_faults', zabbix_server, str(status_result[1]['extra_info']['page_faults']), hostname)
+		send_value('mongo.uptime', zabbix_server, str(status_result[1]['uptime']), hostname)
+		send_value('mongo.version', zabbix_server, str(status_result[1]['version']), hostname)
 	elif status_result[0]  == 1:
-		send_value('mongos.alive', zabbix_server, str(0))
+		send_value('mongo.alive', zabbix_server, str(0), hostname)
 		print('Cound not connect to the server', ip, str(port))
 	else:
 		print('\nCound not get the server status', ip, str(port))
@@ -134,8 +134,8 @@ def main(argv):
 	if zabbix_server == '' or mongo_ip == '' or mongo_port == '':
 		print('invalid input!\nplease check and use python mongodb_standalone_noauth.py --help for more information\n')
 		sys.exit(2)
-	process_mongodb(mongo_ip, mongo_port, zabbix_server)
+	process_mongodb(mongo_ip, mongo_port, zabbix_server, hostname_first + mongo_ip)
 		
 
 if __name__ == "__main__":
-   main(sys.argv[1:])
+	main(sys.argv[1:])

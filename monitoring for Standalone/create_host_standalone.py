@@ -5,7 +5,7 @@
 '@file: create_host_standalone.py
 '@author: liyunting
 '@version: 2
-'@lastModify: 2019-02-10 14:28
+'@lastModify: 2019-02-14 14:44
 '
 '''
 
@@ -324,8 +324,9 @@ def main(argv):
 	#if import template and create host group successfully
 	#then create host 'mongo_server'
 	if template_id != '' and group_id != '':
-		#create host 'mongo_server' and link 'Template DB MongoDB'
-		hostname = 'mongo_server'
+		#create host named by ip with prefix 'mongo_' and and link 'Template DB MongoDB'
+		hostname_first = 'mongo_'
+		hostname = hostname_first + mongo_ip
 		zabbix_create_host(auth, hostname, mongo_ip, group_id, template_id, zabbix_server)
 	else :
 		print("can not complete creating the host, please check and try again")
