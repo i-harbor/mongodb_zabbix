@@ -5,7 +5,7 @@
 '@file: mongodb_repl_noauth.py
 '@author: liyunting
 '@version: 1
-'@lastModify: 2019-02-10 22:06
+'@lastModify: 2019-02-14 15:33
 '
 '''
 
@@ -184,4 +184,4 @@ def main(argv):
 		
 
 if __name__ == "__main__":
-   main(sys.argv[1:])
+	main(sys.argv[1:])
