@@ -5,7 +5,7 @@
 '@file: create_host_repl.py
 '@author: liyunting
 '@version: 1
-'@lastModify: 2019-02-14 15:34
+'@lastModify: 2019-02-19 15:39
 '
 '''
 
@@ -169,26 +169,25 @@ def zabbix_get_template(auth, templatename, zabbix_server):
 		the template id
 	'''
 	template_id = ''
-	if auth != '':
-		payload = {
-    		"jsonrpc": "2.0",
-    		"method": "template.get",
-    		"params": {
-    		    "output": "extend",
-    		    "filter": {
-    		        "host": [
-    		            templatename
-    		        ]
-    		    }
-    		},
-    		"auth": auth,
-    		"id": 1
+	payload = {
+		"jsonrpc": "2.0",
+		"method": "template.get",
+		"params": {
+		    "output": "extend",
+		    "filter": {
+		        "host": [
+		            templatename
+		        ]
+		    }
+		},
+		"auth": auth,
+		"id": 1
 		}
-		res = zabbix_call(payload, zabbix_server)
-		if 'result' in res :
-			template_id = res['result'][0]['templateid']
-		else:
-			print(res['error'])
+	res = zabbix_call(payload, zabbix_server)
+	if 'result' in res :
+		template_id = res['result'][0]['templateid']
+	else:
+		print(res['error'])
 	return template_id
 
 
