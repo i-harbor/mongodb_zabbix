@@ -1,0 +1,38 @@
+{
+	"mongos" : [
+		{"ip" : "10.0.86.206", "port" : 20000},
+		{"ip" : "10.0.86.204", "port" : 20000},
+		{"ip" : "10.0.86.195", "port" : 20000}
+	],
+	"config" : [
+		{"ip" : "10.0.86.206", "port" : 21000, "role" : "not arbiter"},
+		{"ip" : "10.0.86.204", "port" : 21000, "role" : "not arbiter"},
+		{"ip" : "10.0.86.195", "port" : 21000, "role" : "not arbiter"}
+	],
+	"shard" : [
+		{
+			"name" : "shard1",
+			"members" : [
+				{"ip" : "10.0.86.206", "port" : 27001, "role" : "not arbiter"},
+				{"ip" : "10.0.86.204", "port" : 27001, "role" : "not arbiter"},
+				{"ip" : "10.0.86.195", "port" : 27001, "role" : "arbiter"}
+			]
+		},		
+		{
+			"name" : "shard2",
+			"members" : [
+				{"ip" : "10.0.86.206", "port" : 27002, "role" : "not arbiter"},
+				{"ip" : "10.0.86.204", "port" : 27002, "role" : "not arbiter"},
+				{"ip" : "10.0.86.195", "port" : 27002, "role" : "arbiter"}
+			]
+		},
+		{
+			"name" : "shard3",
+			"members" : [
+				{"ip" : "10.0.86.195", "port" : 27003, "role" : "not arbiter"},
+				{"ip" : "10.0.86.204", "port" : 27003, "role" : "not arbiter"},
+				{"ip" : "10.0.86.206", "port" : 27003, "role" : "arbiter"}
+			]
+		}
+	]
+}

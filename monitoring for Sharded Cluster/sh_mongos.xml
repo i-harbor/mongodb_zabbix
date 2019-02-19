@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>4.0</version>
-    <date>2019-01-04T12:03:19Z</date>
+    <date>2019-02-15T07:38:33Z</date>
     <groups>
         <group>
-            <name>Mongodb Sharded Cluster</name>
+            <name>Templates/Databases</name>
         </group>
     </groups>
     <templates>
         <template>
-            <template>Template for mongos v1</template>
-            <name>Template for mongos v1</name>
+            <template>Template MongoDB Sh Mongos</template>
+            <name>Template MongoDB Sh Mongos</name>
             <description/>
             <groups>
                 <group>
-                    <name>Mongodb Sharded Cluster</name>
+                    <name>Templates/Databases</name>
                 </group>
             </groups>
             <applications>
                 <application>
-                    <name>mongos</name>
+                    <name>Mongos</name>
                 </application>
             </applications>
             <items>
                 <item>
-                    <name>the status of mongos in this server</name>
+                    <name>Mongo status</name>
                     <type>2</type>
                     <snmp_community/>
                     <snmp_oid/>
                     <key>mongos.alive</key>
                     <delay>0</delay>
-                    <history>90d</history>
+                    <history>1w</history>
                     <trends>365d</trends>
                     <status>0</status>
                     <value_type>3</value_type>
@@ -55,11 +55,11 @@
                     <inventory_link>0</inventory_link>
                     <applications>
                         <application>
-                            <name>mongos</name>
+                            <name>Mongos</name>
                         </application>
                     </applications>
                     <valuemap>
-                        <name>Instance status</name>
+                        <name>Service state</name>
                     </valuemap>
                     <logtimefmt/>
                     <preprocessing/>
@@ -85,13 +85,13 @@
                     <master_item/>
                 </item>
                 <item>
-                    <name>the number of available connections to mongos</name>
+                    <name>Mongo current connections</name>
                     <type>2</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>mongos.connections.available</key>
+                    <key>mongos.conn.current</key>
                     <delay>0</delay>
-                    <history>90d</history>
+                    <history>1w</history>
                     <trends>365d</trends>
                     <status>0</status>
                     <value_type>3</value_type>
@@ -116,7 +116,7 @@
                     <inventory_link>0</inventory_link>
                     <applications>
                         <application>
-                            <name>mongos</name>
+                            <name>Mongos</name>
                         </application>
                     </applications>
                     <valuemap/>
@@ -144,308 +144,13 @@
                     <master_item/>
                 </item>
                 <item>
-                    <name>the number of currently active connections to mongos</name>
-                    <type>2</type>
-                    <snmp_community/>
-                    <snmp_oid/>
-                    <key>mongos.connections.current</key>
-                    <delay>0</delay>
-                    <history>90d</history>
-                    <trends>365d</trends>
-                    <status>0</status>
-                    <value_type>3</value_type>
-                    <allowed_hosts/>
-                    <units/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <inventory_link>0</inventory_link>
-                    <applications>
-                        <application>
-                            <name>mongos</name>
-                        </application>
-                    </applications>
-                    <valuemap/>
-                    <logtimefmt/>
-                    <preprocessing/>
-                    <jmx_endpoint/>
-                    <timeout>3s</timeout>
-                    <url/>
-                    <query_fields/>
-                    <posts/>
-                    <status_codes>200</status_codes>
-                    <follow_redirects>1</follow_redirects>
-                    <post_type>0</post_type>
-                    <http_proxy/>
-                    <headers/>
-                    <retrieve_mode>0</retrieve_mode>
-                    <request_method>0</request_method>
-                    <output_format>0</output_format>
-                    <allow_traps>0</allow_traps>
-                    <ssl_cert_file/>
-                    <ssl_key_file/>
-                    <ssl_key_password/>
-                    <verify_peer>0</verify_peer>
-                    <verify_host>0</verify_host>
-                    <master_item/>
-                </item>
-                <item>
-                    <name>the number of cursors that mongos server is maintaining for clients</name>
-                    <type>2</type>
-                    <snmp_community/>
-                    <snmp_oid/>
-                    <key>mongos.cursor.open</key>
-                    <delay>0</delay>
-                    <history>90d</history>
-                    <trends>365d</trends>
-                    <status>0</status>
-                    <value_type>3</value_type>
-                    <allowed_hosts/>
-                    <units/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <inventory_link>0</inventory_link>
-                    <applications>
-                        <application>
-                            <name>mongos</name>
-                        </application>
-                    </applications>
-                    <valuemap/>
-                    <logtimefmt/>
-                    <preprocessing/>
-                    <jmx_endpoint/>
-                    <timeout>3s</timeout>
-                    <url/>
-                    <query_fields/>
-                    <posts/>
-                    <status_codes>200</status_codes>
-                    <follow_redirects>1</follow_redirects>
-                    <post_type>0</post_type>
-                    <http_proxy/>
-                    <headers/>
-                    <retrieve_mode>0</retrieve_mode>
-                    <request_method>0</request_method>
-                    <output_format>0</output_format>
-                    <allow_traps>0</allow_traps>
-                    <ssl_cert_file/>
-                    <ssl_key_file/>
-                    <ssl_key_password/>
-                    <verify_peer>0</verify_peer>
-                    <verify_host>0</verify_host>
-                    <master_item/>
-                </item>
-                <item>
-                    <name>the total number of cursors that have timed out since mongos started</name>
-                    <type>2</type>
-                    <snmp_community/>
-                    <snmp_oid/>
-                    <key>mongos.cursor.timeout</key>
-                    <delay>0</delay>
-                    <history>90d</history>
-                    <trends>365d</trends>
-                    <status>0</status>
-                    <value_type>3</value_type>
-                    <allowed_hosts/>
-                    <units/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description>If this number is large or growing at a regular rate, this may indicate an application error.</description>
-                    <inventory_link>0</inventory_link>
-                    <applications>
-                        <application>
-                            <name>mongos</name>
-                        </application>
-                    </applications>
-                    <valuemap/>
-                    <logtimefmt/>
-                    <preprocessing/>
-                    <jmx_endpoint/>
-                    <timeout>3s</timeout>
-                    <url/>
-                    <query_fields/>
-                    <posts/>
-                    <status_codes>200</status_codes>
-                    <follow_redirects>1</follow_redirects>
-                    <post_type>0</post_type>
-                    <http_proxy/>
-                    <headers/>
-                    <retrieve_mode>0</retrieve_mode>
-                    <request_method>0</request_method>
-                    <output_format>0</output_format>
-                    <allow_traps>0</allow_traps>
-                    <ssl_cert_file/>
-                    <ssl_key_file/>
-                    <ssl_key_password/>
-                    <verify_peer>0</verify_peer>
-                    <verify_host>0</verify_host>
-                    <master_item/>
-                </item>
-                <item>
-                    <name>the amount of RAM that is currently used by mongos (Mb)</name>
-                    <type>2</type>
-                    <snmp_community/>
-                    <snmp_oid/>
-                    <key>mongos.memory.resident</key>
-                    <delay>0</delay>
-                    <history>90d</history>
-                    <trends>365d</trends>
-                    <status>0</status>
-                    <value_type>3</value_type>
-                    <allowed_hosts/>
-                    <units/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <inventory_link>0</inventory_link>
-                    <applications>
-                        <application>
-                            <name>mongos</name>
-                        </application>
-                    </applications>
-                    <valuemap/>
-                    <logtimefmt/>
-                    <preprocessing/>
-                    <jmx_endpoint/>
-                    <timeout>3s</timeout>
-                    <url/>
-                    <query_fields/>
-                    <posts/>
-                    <status_codes>200</status_codes>
-                    <follow_redirects>1</follow_redirects>
-                    <post_type>0</post_type>
-                    <http_proxy/>
-                    <headers/>
-                    <retrieve_mode>0</retrieve_mode>
-                    <request_method>0</request_method>
-                    <output_format>0</output_format>
-                    <allow_traps>0</allow_traps>
-                    <ssl_cert_file/>
-                    <ssl_key_file/>
-                    <ssl_key_password/>
-                    <verify_peer>0</verify_peer>
-                    <verify_host>0</verify_host>
-                    <master_item/>
-                </item>
-                <item>
-                    <name>the amount of virtual memory that is used by mongos(Mb)</name>
-                    <type>2</type>
-                    <snmp_community/>
-                    <snmp_oid/>
-                    <key>mongos.memory.virtual</key>
-                    <delay>0</delay>
-                    <history>90d</history>
-                    <trends>365d</trends>
-                    <status>0</status>
-                    <value_type>3</value_type>
-                    <allowed_hosts/>
-                    <units/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <inventory_link>0</inventory_link>
-                    <applications>
-                        <application>
-                            <name>mongos</name>
-                        </application>
-                    </applications>
-                    <valuemap/>
-                    <logtimefmt/>
-                    <preprocessing/>
-                    <jmx_endpoint/>
-                    <timeout>3s</timeout>
-                    <url/>
-                    <query_fields/>
-                    <posts/>
-                    <status_codes>200</status_codes>
-                    <follow_redirects>1</follow_redirects>
-                    <post_type>0</post_type>
-                    <http_proxy/>
-                    <headers/>
-                    <retrieve_mode>0</retrieve_mode>
-                    <request_method>0</request_method>
-                    <output_format>0</output_format>
-                    <allow_traps>0</allow_traps>
-                    <ssl_cert_file/>
-                    <ssl_key_file/>
-                    <ssl_key_password/>
-                    <verify_peer>0</verify_peer>
-                    <verify_host>0</verify_host>
-                    <master_item/>
-                </item>
-                <item>
-                    <name>the number of bytes that reflects the amount of network traffic received by mongos</name>
+                    <name>Mongo bytes received per second</name>
                     <type>2</type>
                     <snmp_community/>
                     <snmp_oid/>
                     <key>mongos.network.in</key>
                     <delay>0</delay>
-                    <history>90d</history>
+                    <history>1w</history>
                     <trends>365d</trends>
                     <status>0</status>
                     <value_type>3</value_type>
@@ -470,12 +175,17 @@
                     <inventory_link>0</inventory_link>
                     <applications>
                         <application>
-                            <name>mongos</name>
+                            <name>Mongos</name>
                         </application>
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <timeout>3s</timeout>
                     <url/>
@@ -498,13 +208,13 @@
                     <master_item/>
                 </item>
                 <item>
-                    <name>the number of bytes that reflects the amount of network traffic sent from mongos</name>
+                    <name>Mongo bytes sent per second</name>
                     <type>2</type>
                     <snmp_community/>
                     <snmp_oid/>
                     <key>mongos.network.out</key>
                     <delay>0</delay>
-                    <history>90d</history>
+                    <history>1w</history>
                     <trends>365d</trends>
                     <status>0</status>
                     <value_type>3</value_type>
@@ -529,12 +239,17 @@
                     <inventory_link>0</inventory_link>
                     <applications>
                         <application>
-                            <name>mongos</name>
+                            <name>Mongos</name>
                         </application>
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <timeout>3s</timeout>
                     <url/>
@@ -557,13 +272,13 @@
                     <master_item/>
                 </item>
                 <item>
-                    <name>the number of delete operations since mongos last started</name>
+                    <name>Mongo delete operations per second</name>
                     <type>2</type>
                     <snmp_community/>
                     <snmp_oid/>
                     <key>mongos.op.delete</key>
                     <delay>0</delay>
-                    <history>90d</history>
+                    <history>1w</history>
                     <trends>365d</trends>
                     <status>0</status>
                     <value_type>3</value_type>
@@ -588,12 +303,17 @@
                     <inventory_link>0</inventory_link>
                     <applications>
                         <application>
-                            <name>mongos</name>
+                            <name>Mongos</name>
                         </application>
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <timeout>3s</timeout>
                     <url/>
@@ -616,13 +336,13 @@
                     <master_item/>
                 </item>
                 <item>
-                    <name>the number of getmore operations since mongos last started</name>
+                    <name>Mongo getmore operations per second</name>
                     <type>2</type>
                     <snmp_community/>
                     <snmp_oid/>
                     <key>mongos.op.getmore</key>
                     <delay>0</delay>
-                    <history>90d</history>
+                    <history>1w</history>
                     <trends>365d</trends>
                     <status>0</status>
                     <value_type>3</value_type>
@@ -647,12 +367,17 @@
                     <inventory_link>0</inventory_link>
                     <applications>
                         <application>
-                            <name>mongos</name>
+                            <name>Mongos</name>
                         </application>
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <timeout>3s</timeout>
                     <url/>
@@ -675,13 +400,13 @@
                     <master_item/>
                 </item>
                 <item>
-                    <name>the number of insert operations since mongos last started</name>
+                    <name>Mongo insert operations per second</name>
                     <type>2</type>
                     <snmp_community/>
                     <snmp_oid/>
                     <key>mongos.op.insert</key>
                     <delay>0</delay>
-                    <history>90d</history>
+                    <history>1w</history>
                     <trends>365d</trends>
                     <status>0</status>
                     <value_type>3</value_type>
@@ -706,12 +431,17 @@
                     <inventory_link>0</inventory_link>
                     <applications>
                         <application>
-                            <name>mongos</name>
+                            <name>Mongos</name>
                         </application>
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <timeout>3s</timeout>
                     <url/>
@@ -734,13 +464,13 @@
                     <master_item/>
                 </item>
                 <item>
-                    <name>the number of query operations since mongos last started</name>
+                    <name>Mongo query operations per second</name>
                     <type>2</type>
                     <snmp_community/>
                     <snmp_oid/>
                     <key>mongos.op.query</key>
                     <delay>0</delay>
-                    <history>90d</history>
+                    <history>1w</history>
                     <trends>365d</trends>
                     <status>0</status>
                     <value_type>3</value_type>
@@ -765,12 +495,17 @@
                     <inventory_link>0</inventory_link>
                     <applications>
                         <application>
-                            <name>mongos</name>
+                            <name>Mongos</name>
                         </application>
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <timeout>3s</timeout>
                     <url/>
@@ -793,13 +528,13 @@
                     <master_item/>
                 </item>
                 <item>
-                    <name>the number of update operations since mongos last started</name>
+                    <name>Mongo update operations per second</name>
                     <type>2</type>
                     <snmp_community/>
                     <snmp_oid/>
                     <key>mongos.op.update</key>
                     <delay>0</delay>
-                    <history>90d</history>
+                    <history>1w</history>
                     <trends>365d</trends>
                     <status>0</status>
                     <value_type>3</value_type>
@@ -824,12 +559,17 @@
                     <inventory_link>0</inventory_link>
                     <applications>
                         <application>
-                            <name>mongos</name>
+                            <name>Mongos</name>
                         </application>
                     </applications>
                     <valuemap/>
                     <logtimefmt/>
-                    <preprocessing/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <timeout>3s</timeout>
                     <url/>
@@ -852,72 +592,13 @@
                     <master_item/>
                 </item>
                 <item>
-                    <name>the total number of page faults in mongos</name>
-                    <type>2</type>
-                    <snmp_community/>
-                    <snmp_oid/>
-                    <key>mongos.page_faults</key>
-                    <delay>0</delay>
-                    <history>90d</history>
-                    <trends>365d</trends>
-                    <status>0</status>
-                    <value_type>3</value_type>
-                    <allowed_hosts/>
-                    <units/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description/>
-                    <inventory_link>0</inventory_link>
-                    <applications>
-                        <application>
-                            <name>mongos</name>
-                        </application>
-                    </applications>
-                    <valuemap/>
-                    <logtimefmt/>
-                    <preprocessing/>
-                    <jmx_endpoint/>
-                    <timeout>3s</timeout>
-                    <url/>
-                    <query_fields/>
-                    <posts/>
-                    <status_codes>200</status_codes>
-                    <follow_redirects>1</follow_redirects>
-                    <post_type>0</post_type>
-                    <http_proxy/>
-                    <headers/>
-                    <retrieve_mode>0</retrieve_mode>
-                    <request_method>0</request_method>
-                    <output_format>0</output_format>
-                    <allow_traps>0</allow_traps>
-                    <ssl_cert_file/>
-                    <ssl_key_file/>
-                    <ssl_key_password/>
-                    <verify_peer>0</verify_peer>
-                    <verify_host>0</verify_host>
-                    <master_item/>
-                </item>
-                <item>
-                    <name>the running time of mongos in this server (seconds)</name>
+                    <name>Mongo uptime (s)</name>
                     <type>2</type>
                     <snmp_community/>
                     <snmp_oid/>
                     <key>mongos.uptime</key>
                     <delay>0</delay>
-                    <history>90d</history>
+                    <history>1w</history>
                     <trends>365d</trends>
                     <status>0</status>
                     <value_type>3</value_type>
@@ -942,7 +623,66 @@
                     <inventory_link>0</inventory_link>
                     <applications>
                         <application>
-                            <name>mongos</name>
+                            <name>Mongos</name>
+                        </application>
+                    </applications>
+                    <valuemap/>
+                    <logtimefmt/>
+                    <preprocessing/>
+                    <jmx_endpoint/>
+                    <timeout>3s</timeout>
+                    <url/>
+                    <query_fields/>
+                    <posts/>
+                    <status_codes>200</status_codes>
+                    <follow_redirects>1</follow_redirects>
+                    <post_type>0</post_type>
+                    <http_proxy/>
+                    <headers/>
+                    <retrieve_mode>0</retrieve_mode>
+                    <request_method>0</request_method>
+                    <output_format>0</output_format>
+                    <allow_traps>0</allow_traps>
+                    <ssl_cert_file/>
+                    <ssl_key_file/>
+                    <ssl_key_password/>
+                    <verify_peer>0</verify_peer>
+                    <verify_host>0</verify_host>
+                    <master_item/>
+                </item>
+                <item>
+                    <name>Mongo version</name>
+                    <type>2</type>
+                    <snmp_community/>
+                    <snmp_oid/>
+                    <key>mongos.version</key>
+                    <delay>0</delay>
+                    <history>1w</history>
+                    <trends>0</trends>
+                    <status>0</status>
+                    <value_type>1</value_type>
+                    <allowed_hosts/>
+                    <units/>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <inventory_link>0</inventory_link>
+                    <applications>
+                        <application>
+                            <name>Mongos</name>
                         </application>
                     </applications>
                     <valuemap/>
@@ -979,26 +719,10 @@
     </templates>
     <triggers>
         <trigger>
-            <expression>{Template for mongos v1:mongos.alive.last()}=0</expression>
+            <expression>{Template MongoDB Sh Mongos:mongos.alive.last()}=0</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
-            <name>the mongos instance in this server is down</name>
-            <correlation_mode>0</correlation_mode>
-            <correlation_tag/>
-            <url/>
-            <status>0</status>
-            <priority>5</priority>
-            <description/>
-            <type>0</type>
-            <manual_close>0</manual_close>
-            <dependencies/>
-            <tags/>
-        </trigger>
-        <trigger>
-            <expression>{Template for mongos v1:mongos.connections.available.last()}&lt;20</expression>
-            <recovery_mode>0</recovery_mode>
-            <recovery_expression/>
-            <name>the number of available connections for mongos is less than $1</name>
+            <name>Mongos is down</name>
             <correlation_mode>0</correlation_mode>
             <correlation_tag/>
             <url/>
@@ -1011,9 +735,135 @@
             <tags/>
         </trigger>
     </triggers>
+    <graphs>
+        <graph>
+            <name>Mongos bandwidth</name>
+            <width>900</width>
+            <height>200</height>
+            <yaxismin>0.0000</yaxismin>
+            <yaxismax>100.0000</yaxismax>
+            <show_work_period>1</show_work_period>
+            <show_triggers>1</show_triggers>
+            <type>0</type>
+            <show_legend>1</show_legend>
+            <show_3d>0</show_3d>
+            <percent_left>0.0000</percent_left>
+            <percent_right>0.0000</percent_right>
+            <ymin_type_1>0</ymin_type_1>
+            <ymax_type_1>0</ymax_type_1>
+            <ymin_item_1>0</ymin_item_1>
+            <ymax_item_1>0</ymax_item_1>
+            <graph_items>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>5</drawtype>
+                    <color>4CAF50</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>Template MongoDB Sh Mongos</host>
+                        <key>mongos.network.in</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <drawtype>5</drawtype>
+                    <color>FF9800</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>Template MongoDB Sh Mongos</host>
+                        <key>mongos.network.out</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>Mongos operations</name>
+            <width>900</width>
+            <height>200</height>
+            <yaxismin>0.0000</yaxismin>
+            <yaxismax>100.0000</yaxismax>
+            <show_work_period>1</show_work_period>
+            <show_triggers>1</show_triggers>
+            <type>0</type>
+            <show_legend>1</show_legend>
+            <show_3d>0</show_3d>
+            <percent_left>0.0000</percent_left>
+            <percent_right>0.0000</percent_right>
+            <ymin_type_1>0</ymin_type_1>
+            <ymax_type_1>0</ymax_type_1>
+            <ymin_item_1>0</ymin_item_1>
+            <ymax_item_1>0</ymax_item_1>
+            <graph_items>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>1A7C11</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>Template MongoDB Sh Mongos</host>
+                        <key>mongos.op.delete</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>FDD835</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>Template MongoDB Sh Mongos</host>
+                        <key>mongos.op.getmore</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>2</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>2774A4</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>Template MongoDB Sh Mongos</host>
+                        <key>mongos.op.insert</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>3</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>A54F10</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>Template MongoDB Sh Mongos</host>
+                        <key>mongos.op.query</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>4</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>FC6EA3</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>Template MongoDB Sh Mongos</host>
+                        <key>mongos.op.update</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+    </graphs>
     <value_maps>
         <value_map>
-            <name>Instance status</name>
+            <name>Service state</name>
             <mappings>
                 <mapping>
                     <value>0</value>
@@ -1021,7 +871,7 @@
                 </mapping>
                 <mapping>
                     <value>1</value>
-                    <newvalue>Normal</newvalue>
+                    <newvalue>Up</newvalue>
                 </mapping>
             </mappings>
         </value_map>
